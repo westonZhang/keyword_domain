@@ -1,11 +1,13 @@
 package keyword_count_service
 
-import "github.com/kevin-zx/baidu-seo-tool/search"
+import (
+	"keyword_domain/services/other_services"
+)
 
 // 百度移动端keywordCountMap
 func BaiduMobileKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	keywordCountMap := make(map[string]int)
-	keywords, err := search.ExpandBaiduRecommendWords(rootKeyword)
+	keywords, err := other_services.ExpandBaiduRecommendWords(rootKeyword)
 	if err != nil {
 		return keywordCountMap, err
 	}

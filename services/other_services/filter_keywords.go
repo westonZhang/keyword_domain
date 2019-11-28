@@ -4,7 +4,9 @@ import "strings"
 
 // 过滤count没达到平均值的词
 // 过滤含有特殊字符的词
-func FilterKeywords(keywordCountMap map[string]int) map[string]int {
+func FilterKeywords(keywordCountMap map[string]int, rootKeyword string) map[string]int {
+	delete(keywordCountMap, rootKeyword) // 删除含有根词的map
+
 	// 删除含有特殊字符的词
 	invalidChars := []string{",", "�", "Ͱ", "䣬", "ҡ", "䡢", "ɳ", "Դ", "Ὠ", "й", "վ", "գ", "Ʒ", "˾", "۸", "ա", "�ͭ", "ҵ", "ϸ", "ã", "ջ", "", "ճ", "ͳ"}
 	for k, _ := range keywordCountMap {
@@ -23,7 +25,6 @@ func FilterKeywords(keywordCountMap map[string]int) map[string]int {
 	}
 
 	avgCount := float64(sumCount) / float64(len(keywordCountMap))
-	avgCount = avgCount / 1.5
 
 	for k, v := range keywordCountMap {
 		if float64(v) >= avgCount {

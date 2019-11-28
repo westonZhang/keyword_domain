@@ -7,6 +7,8 @@ require (
 	github.com/joeguo/tldextract v0.0.0-20180214020933-b623e0574407
 	github.com/kevin-zx/baidu-seo-tool v0.0.0-20191031081818-d3a88ea8a839
 	github.com/kevin-zx/baiduApiSDK v0.0.0-20190925024644-01dc0fb48a35
-	github.com/kevin-zx/seotools v0.0.0-20191122084048-b5097042bd6e // indirect
+	github.com/kevin-zx/http-util v0.0.0-20191122081506-be2470291058
+	github.com/kevin-zx/seotools v0.0.0-20191122084048-b5097042bd6e
 	github.com/panwenbin/ghttpclient v0.3.0
+	github.com/tidwall/gjson v1.2.1
 )

@@ -1,7 +1,7 @@
 package logics
 
 // go程数
-const ThreadCount = 10
+const ThreadCount = 20
 
 // 查词总页数
 const SumPage = 3

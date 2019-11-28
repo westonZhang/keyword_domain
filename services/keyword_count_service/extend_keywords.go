@@ -33,10 +33,9 @@ func ExtendKeywordCountMap(brs *[]search.SearchResult, rootKey string) (map[stri
 		}
 	}
 
-	// count*2
-	//for k, _ := range keywordCountMap {
-	//	keywordCountMap[k] *= 2
-	//}
+	for k, _ := range keywordCountMap {
+		keywordCountMap[k] = 1
+	}
 
 	return keywordCountMap
 }

@@ -10,11 +10,11 @@ import (
 // 获取所有的keywordCountMap
 func KeywordCountMap(rootKeyword string) map[string]int {
 	finalKeywordCountMap := make(map[string]int)
-	domains, relatedKeywords, redKeywords, baiduPcResults := other_services.SearchSingleKeyword(rootKeyword)
+	domains, relatedKeywords, _, baiduPcResults := other_services.SearchSingleKeyword(rootKeyword) // _: redKeywords
 
 	// domain的keywordCountMap
 	if domainKeywordCountMap, err := keyword_count_service.DomainKeywordCountMap(domains); err != nil {
-		fmt.Println(fmt.Sprintf("rootKeyword: %s, DomainKeywordCountMap error: %s", rootKeyword, err.Error()))
+		fmt.Println(fmt.Sprintf("DomainKeywordCountMap error: %s", rootKeyword, err.Error()))
 	} else {
 		for k, v := range domainKeywordCountMap {
 			finalKeywordCountMap[k] += v
@@ -29,7 +29,7 @@ func KeywordCountMap(rootKeyword string) map[string]int {
 
 	// 下拉词的keywordCountMap
 	if sugKeywordCountMap, err := keyword_count_service.SugKeywordCountMap(rootKeyword); err != nil {
-		fmt.Println(fmt.Sprintf("rootKeyword: %s, SugKeywordCountMap error: %s", rootKeyword, err.Error()))
+		fmt.Println(fmt.Sprintf("SugKeywordCountMap error: %s", rootKeyword, err.Error()))
 	} else {
 		for k, v := range sugKeywordCountMap {
 			finalKeywordCountMap[k] += v
@@ -38,7 +38,7 @@ func KeywordCountMap(rootKeyword string) map[string]int {
 
 	// 移动端的keywordCountMap
 	if mobileKeywordCountMap, err := keyword_count_service.BaiduMobileKeywordCountMap(rootKeyword); err != nil {
-		fmt.Println(fmt.Sprintf("rootKeyword: %s, BaiduMobileKeywordCountMap error: %s", rootKeyword, err.Error()))
+		fmt.Println(fmt.Sprintf("BaiduMobileKeywordCountMap error: %s", rootKeyword, err.Error()))
 	} else {
 		for k, v := range mobileKeywordCountMap {
 			finalKeywordCountMap[k] += v
@@ -52,24 +52,25 @@ func KeywordCountMap(rootKeyword string) map[string]int {
 	}
 
 	// 通过百度API获得的keywordCountMap
-	//if baiduApiKeywordCountMap, err := keyword_count_service.BaiduApiKeywordCountMap(rootKeyword); err != nil {
-	//	fmt.Println(fmt.Sprintf("rootKeyword: %s, BaiduApiKeywordCountMap error: %s", rootKeyword, err.Error()))
-	//} else {
-	//	for k, v := range baiduApiKeywordCountMap {
-	//		finalKeywordCountMap[k] += v
-	//	}
-	//}
+	if baiduApiKeywordCountMap, err := keyword_count_service.BaiduApiKeywordCountMap(rootKeyword); err != nil {
+		fmt.Println(fmt.Sprintf("BaiduApiKeywordCountMap error: %s", rootKeyword, err.Error()))
+	} else {
+		for k, v := range baiduApiKeywordCountMap {
+			finalKeywordCountMap[k] += v
+		}
+	}
 
 	// 通过5118API获得的keywordCountMap
-	//if Api5118KeywordCountMap, err := keyword_count_service.API5118KeywordCountMap(rootKeyword); err != nil {
-	//	fmt.Println(fmt.Sprintf("rootKeyword: %s, API5118KeywordCountMap error: %s", rootKeyword, err.Error()))
-	//} else {
-	//	for k, v := range Api5118KeywordCountMap {
-	//		finalKeywordCountMap[k] += v
-	//	}
-	//}
+	if Api5118KeywordCountMap, err := keyword_count_service.Api5118KeywordCountMap(rootKeyword); err != nil {
+		fmt.Println(fmt.Sprintf("Api5118KeywordCountMap error: %s", rootKeyword, err.Error()))
+	} else {
+		for k, v := range Api5118KeywordCountMap {
+			finalKeywordCountMap[k] += v
+		}
+	}
 
-	return doubleCount(finalKeywordCountMap, redKeywords)
+	//return doubleCount(finalKeywordCountMap, redKeywords)
+	return finalKeywordCountMap
 }
 
 // 如果关键词中有包含标红的词，count*2

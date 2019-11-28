@@ -16,11 +16,11 @@ func MainSearch() {
 				allKeywordCountMap := KeywordCountMap(rootKeyword)
 
 				// 过滤词
-				finalKeywordCountMap := other_services.FilterKeywords(allKeywordCountMap)
+				filteredKeywordCountMap := other_services.FilterKeywords(allKeywordCountMap, rootKeyword)
 
 				// calculate keyword,rate,weight
 				taskWeight := global.TaskMap[rootKeyword].Weight
-				krs := other_services.CountRate(finalKeywordCountMap, taskWeight)
+				krs := other_services.CountRate(filteredKeywordCountMap, taskWeight)
 
 				// save rootKeyword,keyword,rate  #lock
 				global.KeywordRateResultFileLocker.Lock()
@@ -38,16 +38,20 @@ func MainSearch() {
 				for _, kr := range krs {
 					if kr.Weight > logics.MinWeight {
 						global.TaskMapLocker.Lock()
-						global.TaskMap[kr.Keyword] = &models.Task{
-							Keyword:   kr.Keyword,
-							Weight:    kr.Weight,
-							IsCrawled: false,
+						if _, ok := global.TaskMap[kr.Keyword]; !ok {
+							global.TaskMap[kr.Keyword] = &models.Task{
+								Keyword:   kr.Keyword,
+								Weight:    kr.Weight,
+								IsCrawled: false,
+							}
+							addToTaskMapCount++
 						}
-						addToTaskMapCount++
 						global.TaskMapLocker.Unlock()
 					}
 				}
-				fmt.Println(fmt.Sprintf("rootKeyword: %s, lenth allKeywordCountMap: %d, lenth finalKeywordCountMap: %d, addToTaskMapCount: %d", rootKeyword, len(allKeywordCountMap), len(finalKeywordCountMap), addToTaskMapCount))
+
+				fmt.Println("rootKeyword:", rootKeyword, "sorted krs:", StructArraySort(krs)) // 打印排序后的kr
+				fmt.Println(fmt.Sprintf("rootKeyword: %s, lenth allKeywordCountMap: %d, lenth filteredKeywordCountMap: %d, addToTaskMapCount: %d", rootKeyword, len(allKeywordCountMap), len(filteredKeywordCountMap), addToTaskMapCount))
 
 				// end set taskMap IsCrawled = true #lock  and waitGroupKeywords Done
 				global.TaskMapLocker.Lock()
@@ -60,17 +64,33 @@ func MainSearch() {
 
 	for {
 		getTaskCount := 0
-		for k, v := range global.TaskMap {
-			if !v.IsCrawled {
+		for keyword, task := range global.TaskMap {
+			if !task.IsCrawled {
 				getTaskCount++
 				global.WaitGroupKeywords.Add(1)
-				global.NeedSearchKeywordsChan <- k
+				global.NeedSearchKeywordsChan <- keyword
+				//global.TaskMap[k].IsCrawled = true
 			}
 		}
+
 		if getTaskCount == 0 {
 			break
 		} else {
 			global.WaitGroupKeywords.Wait()
 		}
 	}
+}
+
+// 排序
+func StructArraySort(array []other_services.KeywordRate) []other_services.KeywordRate {
+	for i := 0; i < len(array)-1; i++ {
+		for j := 0; j < len(array)-1-i; j++ {
+
+			if array[j].Rate < array[j+1].Rate { // >升序  <降序
+				array[j], array[j+1] = array[j+1], array[j]
+			}
+		}
+	}
+
+	return array
 }

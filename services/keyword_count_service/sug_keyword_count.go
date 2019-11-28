@@ -42,9 +42,9 @@ func SugKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	}
 
 	// count*2
-	for k, _ := range keywordCountMap {
-		keywordCountMap[k] *= 2
-	}
+	//for k, _ := range keywordCountMap {
+	//	keywordCountMap[k] *= 2
+	//}
 
 	return keywordCountMap, nil
 }

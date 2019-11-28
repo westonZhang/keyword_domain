@@ -6,20 +6,18 @@ import (
 )
 
 var krAuthHeader = &baiduSDK.AuthHeader{
-
-	//Username: "",
-	//Password: "",
-	//Token:    "",
-	//Action: "API-SDK",
-
+	Username: "baidu香港-goodyear",
+	Password: "C1ickPr3478",
+	Token:    "1dd9df63dbf51df2d664faa8ec00d0bf",
+	Action:   "API-SDK",
 }
 
 // 通过百度api拓的词获取的keywordCountMap
 func BaiduApiKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	keywordCountMap := make(map[string]int)
 
-	qs := apiUtil.NewQueryService(krAuthHeader)
-	kis, err := qs.Query([]string{rootKeyword})
+	qs := apiUtil.NewQueryExpandService(krAuthHeader)
+	kis, err := qs.ExpandWordsByQuery(rootKeyword,0)
 	if err != nil {
 		return keywordCountMap, err
 	}
@@ -29,9 +27,9 @@ func BaiduApiKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	}
 
 	// count*2
-	for k, _ := range keywordCountMap {
-		keywordCountMap[k] *= 2
-	}
+	//for k, _ := range keywordCountMap {
+	//	keywordCountMap[k] *= 2
+	//}
 
 	return keywordCountMap, nil
 }

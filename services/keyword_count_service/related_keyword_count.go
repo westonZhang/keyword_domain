@@ -9,9 +9,9 @@ func RelatedKeywordCountMap(keywords []string) map[string]int {
 	}
 
 	// count*2
-	for k, _ := range keywordCountMap {
-		keywordCountMap[k] *= 2
-	}
+	//for k, _ := range keywordCountMap {
+	//	keywordCountMap[k] *= 2
+	//}
 
 	return keywordCountMap
 }
