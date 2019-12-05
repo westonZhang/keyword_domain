@@ -2,7 +2,6 @@ package global
 
 import (
 	"keyword_domain/global/models"
-	"keyword_domain/global/models/logics"
 	"sync"
 )
 
@@ -21,6 +20,6 @@ var NeedSearchKeywordsChan chan string
 func init() {
 	TaskMap = make(map[string]*models.Task)
 	TaskMapLocker = new(sync.Mutex)
-	taskChanCap := logics.ThreadCount
-	NeedSearchKeywordsChan = make(chan string, taskChanCap)
+	//taskChanCap := logics.ThreadCount
+	NeedSearchKeywordsChan = make(chan string, 10000)
 }

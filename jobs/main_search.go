@@ -20,7 +20,7 @@ func MainSearch() {
 
 				// calculate keyword,rate,weight
 				taskWeight := global.TaskMap[rootKeyword].Weight
-				krs := other_services.CountRate(filteredKeywordCountMap, taskWeight)
+				krs := structArraySort(other_services.CountRate(filteredKeywordCountMap, taskWeight)) // get krs and sort
 
 				// save rootKeyword,keyword,rate  #lock
 				global.KeywordRateResultFileLocker.Lock()
@@ -50,7 +50,7 @@ func MainSearch() {
 					}
 				}
 
-				fmt.Println("rootKeyword:", rootKeyword, "sorted krs:", StructArraySort(krs)) // 打印排序后的kr
+				//fmt.Println("rootKeyword:", rootKeyword, "sorted krs:", structArraySort(krs)) // 打印排序后的kr
 				fmt.Println(fmt.Sprintf("rootKeyword: %s, lenth allKeywordCountMap: %d, lenth filteredKeywordCountMap: %d, addToTaskMapCount: %d", rootKeyword, len(allKeywordCountMap), len(filteredKeywordCountMap), addToTaskMapCount))
 
 				// end set taskMap IsCrawled = true #lock  and waitGroupKeywords Done
@@ -82,7 +82,7 @@ func MainSearch() {
 }
 
 // 排序
-func StructArraySort(array []other_services.KeywordRate) []other_services.KeywordRate {
+func structArraySort(array []other_services.KeywordRate) []other_services.KeywordRate {
 	for i := 0; i < len(array)-1; i++ {
 		for j := 0; j < len(array)-1-i; j++ {
 

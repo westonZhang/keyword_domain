@@ -13,7 +13,7 @@ func BaiduMobileKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	}
 
 	for _, keyword := range keywords {
-		keywordCountMap[keyword] ++
+		keywordCountMap[keyword] = 1
 	}
 
 	return keywordCountMap, nil

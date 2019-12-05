@@ -2,10 +2,22 @@ package main
 
 import (
 	"fmt"
-	"keyword_domain/services/other_services"
+	"strings"
 )
 
 func main() {
-	keywords, err := other_services.ExpandBaiduRecommendWords("垃圾")
-	fmt.Println(keywords, err)
+	fmt.Println(keywordContains("自己建网站", "下页"))
+}
+
+func keywordContains(rootKeyword, targetKeyword string) bool {
+	var isContain bool
+	for _, str := range rootKeyword {
+		fmt.Println(string(str))
+		if strings.Contains(targetKeyword, string(str)) {
+			isContain = true
+			break
+		}
+	}
+
+	return isContain
 }
