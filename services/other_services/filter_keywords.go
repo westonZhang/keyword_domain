@@ -9,17 +9,6 @@ import (
 func FilterKeywords(keywordCountMap map[string]int, rootKeyword string) map[string]int {
 	delete(keywordCountMap, rootKeyword) // 删除含有根词的map
 
-	// 删除含有特殊字符的词
-	invalidChars := []string{",", "Ż", "�", "Ͱ", "䣬", "ҡ", "䡢", "ɳ", "Դ", "Ὠ", "й", "վ", "գ", "Ʒ", "˾", "С", "۸", "ա", "�ͭ", "ҵ", "ϸ", "ã", "ջ", "", "ճ", "ͳ", "ռ"}
-	for k, _ := range keywordCountMap {
-		for _, char := range invalidChars {
-			if strings.Contains(k, char) {
-				delete(keywordCountMap, k)
-				break
-			}
-		}
-	}
-
 	newKeywordCountMap := make(map[string]int)
 	var sumCount int
 	for _, v := range keywordCountMap {
@@ -31,6 +20,17 @@ func FilterKeywords(keywordCountMap map[string]int, rootKeyword string) map[stri
 	for k, v := range keywordCountMap {
 		if float64(v) >= avgCount {
 			newKeywordCountMap[k] = v
+		}
+	}
+
+	// 删除含有特殊字符的词
+	invalidChars := []string{",", "ҳ", "Ż", "�", "Ͱ", "䣬", "ҡ", "䡢", "ɳ", "Դ", "Ὠ", "й", "վ", "գ", "Ʒ", "˾", "С", "۸", "ա", "�ͭ", "ҵ", "ϸ", "ã", "ջ", "", "ճ", "ͳ", "ռ"}
+	for k, _ := range newKeywordCountMap {
+		for _, char := range invalidChars {
+			if strings.Contains(k, char) {
+				delete(newKeywordCountMap, k)
+				break
+			}
 		}
 	}
 
