@@ -2,6 +2,7 @@ package other_services
 
 import (
 	"github.com/panwenbin/ghttpclient"
+	"github.com/panwenbin/ghttpclient/header"
 	"strings"
 	"time"
 )
@@ -30,8 +31,12 @@ func VisitDomainGetHtml(searchDomain string) (string, error) {
 }
 
 func getHtml(url string) (html string, err error) {
-	client := ghttpclient.NewClient().Timeout(time.Second * 30).Url(url).Headers(nil).Get()
-	body, err := client.ReadBodyClose()
+	headers := header.GHttpHeader{}
+	headers.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+	headers.AcceptEncodingGzip()
+
+	client := ghttpclient.NewClient().Timeout(time.Second * 30).Url(url).Headers(headers).Get()
+	body, err := client.TryUTF8ReadBodyClose()
 	if err != nil {
 		return "", err
 	}

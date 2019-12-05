@@ -1,8 +1,10 @@
 package other_services
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"keyword_domain/utils"
+	"regexp"
 	"strings"
 )
 
@@ -19,6 +21,18 @@ func ParseKeywords(html string) (keywords []string, err error) {
 		keywordsStr = dom.Find(findStr).AttrOr("content", "")
 		if keywordsStr != "" {
 			break
+		}
+	}
+
+	if keywordsStr == "" {
+		compileKeywordStrs := []string{"keywords", "Keywords", "KeyWords", "KEYWORDS"}
+		for _, str := range compileKeywordStrs {
+			re := regexp.MustCompile(fmt.Sprintf(`<meta name="%s" content="(.*?)">`, str))
+			subMatch := re.FindStringSubmatch(html)
+			if len(subMatch) == 2 {
+				keywordsStr = subMatch[1]
+				break
+			}
 		}
 	}
 
