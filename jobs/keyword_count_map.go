@@ -21,12 +21,6 @@ func KeywordCountMap(rootKeyword string) map[string]int {
 		}
 	}
 
-	// 相关词的keywordCountMap
-	relatedKeywordCountMap := keyword_count_service.RelatedKeywordCountMap(relatedKeywords)
-	for k, v := range relatedKeywordCountMap {
-		finalKeywordCountMap[k] += v
-	}
-
 	// 下拉词的keywordCountMap
 	if sugKeywordCountMap, err := keyword_count_service.SugKeywordCountMap(rootKeyword); err != nil {
 		fmt.Println(fmt.Sprintf("SugKeywordCountMap error: %s", err.Error()))
@@ -36,8 +30,8 @@ func KeywordCountMap(rootKeyword string) map[string]int {
 		}
 	}
 
-	// 移动端的keywordCountMap
-	if mobileKeywordCountMap, err := keyword_count_service.BaiduMobileKeywordCountMap(rootKeyword); err != nil {
+	// 移动端的keywordCountMap 和 相关词
+	if mobileKeywordCountMap, err := keyword_count_service.BaiduMobileKeywordCountMap(rootKeyword, relatedKeywords); err != nil {
 		fmt.Println(fmt.Sprintf("BaiduMobileKeywordCountMap error: %s", err.Error()))
 	} else {
 		for k, v := range mobileKeywordCountMap {
