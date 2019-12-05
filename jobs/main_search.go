@@ -63,11 +63,12 @@ func MainSearch() {
 		}()
 	}
 
-	roundNum := 1 // 轮数
+	roundNum := 1     // 初始的轮数
+	wantRoundNum := 2 // 想跑几轮
 	for {
 		fmt.Println("第", roundNum, "轮")
-		if roundNum > 2 {
-			break
+		if roundNum > wantRoundNum {
+			//break
 		}
 
 		getTaskCount := 0
