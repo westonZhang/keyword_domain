@@ -20,7 +20,8 @@ func MainSearch() {
 
 				// calculate keyword,rate,weight
 				taskWeight := global.TaskMap[rootKeyword].Weight
-				krs := structArraySort(other_services.CountRate(filteredKeywordCountMap, taskWeight)) // get krs and sort
+				krs := other_services.CountRate(filteredKeywordCountMap, taskWeight)
+				krs = structArraySort(krs) // sort
 
 				// save rootKeyword,keyword,rate  #lock
 				global.KeywordRateResultFileLocker.Lock()
@@ -62,7 +63,13 @@ func MainSearch() {
 		}()
 	}
 
+	roundNum := 1 // 轮数
 	for {
+		fmt.Println("第", roundNum, "轮")
+		if roundNum > 2 {
+			break
+		}
+
 		getTaskCount := 0
 		for keyword, task := range global.TaskMap {
 			if !task.IsCrawled {
@@ -78,6 +85,7 @@ func MainSearch() {
 		} else {
 			global.WaitGroupKeywords.Wait()
 		}
+		roundNum++
 	}
 }
 
