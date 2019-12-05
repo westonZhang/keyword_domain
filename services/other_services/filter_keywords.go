@@ -18,7 +18,7 @@ func FilterKeywords(keywordCountMap map[string]int, rootKeyword string) map[stri
 	avgCount := float64(sumCount) / float64(len(keywordCountMap))
 
 	for k, v := range keywordCountMap {
-		if float64(v) >= avgCount {
+		if float64(v) >= avgCount && strings.TrimSpace(k) != "" {
 			newKeywordCountMap[k] = v
 		}
 	}
