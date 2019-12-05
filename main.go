@@ -10,13 +10,13 @@ import (
 	"keyword_domain/utils"
 )
 
-//var keyword = "垃圾分类"
+var defaultKeyword = "建站"
 
 func main() {
 	keyword := readParam()
 	if keyword == "" {
-		keyword = "建站"
-		fmt.Println("Init keyword is nil, now default keyword is \"垃圾回收\". run command example: go run xxx -keyword=\"垃圾回收\"")
+		keyword = defaultKeyword
+		fmt.Println(fmt.Sprintf("Init keyword is nil, now default keyword is \"%s\". run command example: go run xxx -keyword=\"垃圾回收\"", keyword))
 	}
 
 	fmt.Println("Start to run, init keyword:", keyword)
