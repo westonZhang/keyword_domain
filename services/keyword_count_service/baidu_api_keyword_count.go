@@ -17,13 +17,13 @@ func BaiduApiKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	keywordCountMap := make(map[string]int)
 
 	qs := apiUtil.NewQueryExpandService(krAuthHeader)
-	kis, err := qs.ExpandWordsByQuery(rootKeyword,0)
+	kis, err := qs.ExpandWordsByQuery(rootKeyword, 0)
 	if err != nil {
 		return keywordCountMap, err
 	}
 
 	for _, ki := range *kis {
-		keywordCountMap[ki.Word] ++
+		keywordCountMap[ki.Word] = 1
 	}
 
 	// count*2

@@ -18,7 +18,7 @@ func Api5118KeywordCountMap(rootKeyword string) (map[string]int, error) {
 	}
 
 	for _, v := range *lws {
-		keywordCountMap[v.Keyword] ++
+		keywordCountMap[v.Keyword] = 1
 	}
 
 	return keywordCountMap, nil

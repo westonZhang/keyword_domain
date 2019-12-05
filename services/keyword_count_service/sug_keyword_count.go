@@ -38,7 +38,7 @@ func SugKeywordCountMap(rootKeyword string) (map[string]int, error) {
 	}
 
 	for _, g := range data.G {
-		keywordCountMap[g.Q] ++
+		keywordCountMap[g.Q] = 1
 	}
 
 	// count*2
