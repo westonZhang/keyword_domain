@@ -30,7 +30,7 @@ func KeywordCountMap(rootKeyword string) map[string]int {
 		}
 	}
 
-	// 移动端的keywordCountMap 和 相关词
+	// 移动端和相关词的keywordCountMap
 	if mobileKeywordCountMap, err := keyword_count_service.BaiduMobileKeywordCountMap(rootKeyword, relatedKeywords); err != nil {
 		fmt.Println(fmt.Sprintf("BaiduMobileKeywordCountMap error: %s", err.Error()))
 	} else {
